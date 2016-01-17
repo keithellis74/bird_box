@@ -5,11 +5,11 @@ import sys
 import subprocess
 import picamera
 
-#--------------------------------------------------------- 
-# Start capturing video
-
+# uStream keys
 RTMP_URL="rtmp://1.21705518.fme.ustream.tv/ustreamVideo/21705518"
 STREAM_KEY="fKb9NJUycD2unefr9JhukXybZBRSB3Wq"
+
+# ffmpeg command line
 cmdline =['ffmpeg', '-i' ,'-', '-vcodec', 'copy', '-an', '-metadata', 'title=\"Streaming from raspberry pi camera\"', '-f', 'flv', RTMP_URL,'/', STREAM_KEY]
 print ("--------------")
 print (cmdline)
@@ -18,7 +18,8 @@ print ("--------------")
 #cmdline = ['vlc', '--demux', 'h264', '-']
     #cmdline = ['mplayer', '-fps', '25', '-cache', '1024', '-']
 #player = subprocess.Popen(cmdline, stdout=subprocess.PIPE)
-player = subprocess.Popen(cmdline)
+
+player = subprocess.Popen(cmdline, stdout=subprocess.PIPE)
 
 
 #sys.stdout = os.fdopen(sys.stdout.fileno(), 'wb', 0)

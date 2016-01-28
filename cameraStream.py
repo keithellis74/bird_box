@@ -123,10 +123,12 @@ def getFreeSpace():
 # camera.resolution = (1024, 768)
 
 with picamera.PiCamera() as camera: 
-	camera.start_recording(sys.stdout, format='h264')
 	camera.resolution = (640, 480)
 	camera.framerate = 30
-#	camera.roatation =180
+	camera.start_recording(sys.stdout, format='h264')
+	camera.wait_recording(60)
+	camera.stop_recording()
+	#camera.roatation =180
 	
 	
 # Get first image

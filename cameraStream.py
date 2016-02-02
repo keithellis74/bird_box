@@ -1,5 +1,13 @@
 #!/usr/bin/env python3
 
+# --------------------------------------------------------------------
+# This is a sample python script which streams picamera output to stout
+# it is intended to be called with a script, similar to 
+# startPythonStream.sh.
+# The source of this is from Instructables.com
+# http://www.instructables.com/id/Raspberry-Pi-Birdbox-Camera/?ALLSTEPS
+# ---------------------------------------------------------------------
+
 #import smtplib
 #import email
 import mimetypes

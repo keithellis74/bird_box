@@ -19,13 +19,11 @@ import time
 RTMP_URL="rtmp://1.21705518.fme.ustream.tv/ustreamVideo/21705518"
 STREAM_KEY="fKb9NJUycD2unefr9JhukXybZBRSB3Wq"
 
-count = 0  #counts how many loops and also used to name the image files
+count = 0  #counts how many stream loops have been completed
 snapshot_frequency = 10  #frequency of snapshops in seconds
 
-
-
 # ffmpeg command line
-cmdline =['ffmpeg', '-i' , '-', '-vcodec', 'copy', '-an', '-framerate', '25','-metadata', 'title=\"Ipswich IP1 bird box camera\"', '-f', 'flv', RTMP_URL +'/' + STREAM_KEY]
+cmdline =['ffmpeg', '-i' , '-', '-vcodec', 'copy', '-an','-metadata', 'title=\"Ipswich IP1 bird box camera\"', '-f', 'flv', RTMP_URL +'/' + STREAM_KEY]
 
 # Setup up pipe to ffmpeg
 stream = subprocess.Popen(cmdline, stdin=subprocess.PIPE)
@@ -33,24 +31,18 @@ stream = subprocess.Popen(cmdline, stdin=subprocess.PIPE)
 #Set up picamera
 camera = picamera.PiCamera()
 
-
 # Function to determine if camera is recording
 # If recording return False, is not recording return True
 def not_recording():
 	if camera.recording:
 		return False
 	else:
-		print("re-starting recording")
 		return True
 		
 #Function to start streaming for 30 minutes and then stop
 def stream_now():
 	print("About to start recording")
 	camera.start_recording(stream.stdin, format='h264', bitrate = 500000)
-	print("Record for 30 minutes")
-	camera.wait_recording(snapshot_frequency)
-	print("30 minutes expired, about to stop")
-	camera.stop_recording()
 
 #Function to take a snapshop image	
 def snap_shot(name):
@@ -60,18 +52,24 @@ def snap_shot(name):
 #Main code
 try:
 	camera.resolution = (960, 540)
-	camera.framerate = 30
+	camera.framerate = 25
 	camera.vflip = True
 	camera.hflip = True
 	
 # Main loop if not streaming, start take snapstop and stream again
+	start=time.time()
+	last = start
+	snap_shot_count = 0
 	while True:
 		if not_recording():
-			count += 1
-			stream_now()
-		print("taking snap shot")
-		snap_shot('image'+str(count))
-
+			count += 1 # Count number of times Stream has been restarted
+			stream_now() # Start the stream
+		if time.time() - last > snapshot_frequency:  # Take snap shot
+			print("taking snap shot No.",snap_shot_count)
+			snap_shot('image'+str(snap_shot_count))
+			last = time.time()
+			snap_shot_count += 1
+			
 except KeyboardInterrupt:
 		camera.stop_recording()
 
@@ -81,4 +79,5 @@ finally:
 	stream.wait()
 	print("Camera safely shut down")
 	print("Good bye")
-	print("Count = ",count)
+	print("Stream Count =",count)
+	print("Snap shot count =", snap_shot_count)

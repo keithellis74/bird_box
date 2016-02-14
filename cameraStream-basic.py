@@ -15,10 +15,21 @@ RTMP_URL="rtmp://1.21705518.fme.ustream.tv/ustreamVideo/21705518"
 STREAM_KEY="fKb9NJUycD2unefr9JhukXybZBRSB3Wq"
 
 # ffmpeg command line
-cmdline =['ffmpeg', '-i' , '-', '-vcodec', 'copy', '-an', '-metadata', 'title=\"Ipswich IP1 bird box camera\"', '-f', 'flv', RTMP_URL +'/' + STREAM_KEY]
+cmdline =['ffmpeg', 
+			'-i' , '-', 
+			'-vcodec', 'copy', 
+			'-an', 
+			#'-framerate', '25',
+			#'-maxrate', '2000k',
+			#'-bufsize', '4000k',
+			#'-g', '50',
+			#'-timestamp', 'now',
+			'-metadata', 'title=\"Ipswich IP1 bird box camera\"', 
+			'-f', 'flv',
+			 RTMP_URL +'/' + STREAM_KEY]
 
 # Setup up pipe to ffmpeg
-stream = subprocess.Popen(cmdline, stdin=subprocess.PIPE)
+stream = subprocess.Popen(cmdline, bufsize = 1000000, stdin=subprocess.PIPE)
 
 #Set up picamera
 camera = picamera.PiCamera()
@@ -31,10 +42,12 @@ try:
 	camera.hflip = True
 	camera.start_recording(stream.stdin, format='h264', bitrate = 500000)
 	while True:
-		camera.wait_recording(60) 
-	
+		camera.wait_recording(30) 
+		#print("Framerate", camera.framerate)
+		#print("Resolution", camera.resolution)
+		
 except KeyboardInterrupt:
-		camera.stop_recording()
+	camera.stop_recording() 
 
 finally:
 	camera.close()

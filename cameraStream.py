@@ -71,7 +71,7 @@ try:
 			snap_shot_count += 1
 			
 except KeyboardInterrupt:
-		camera.stop_recording()
+	camera.stop_recording()
 
 finally:
 	camera.close()

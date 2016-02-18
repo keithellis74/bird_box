@@ -1,3 +1,5 @@
 images/
 *.jpg
 *.h264
+*.pyc
+*.bak

@@ -1,4 +1,6 @@
 images/
+pictures/
+video/
 *.jpg
 *.h264
 *.pyc

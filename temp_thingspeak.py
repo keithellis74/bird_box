@@ -14,7 +14,7 @@ channel_id = "88282"
 write_key  = "LE6B6L2ZRZ592AA8"
 EXT_ID = "28-041591f7d8ff"
 INT_ID = "28-0015220d64ee"
-
+FREQUENCY = 5 * 60 # Record data at this frequency
 
 def doit(channel):
 
@@ -44,4 +44,4 @@ if __name__ == "__main__":
         '''
         
         doit(channel)
-        time.sleep(16)
+        time.sleep(FREQUENCY)

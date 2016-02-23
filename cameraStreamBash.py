@@ -9,6 +9,8 @@
 import os
 import time
 import picamera
+import sys
+from signal import pause
 
 sys.stdout = os.fdopen(sys.stdout.fileno(), 'wb', 0)
 
@@ -17,8 +19,11 @@ sys.stdout = os.fdopen(sys.stdout.fileno(), 'wb', 0)
 # Start capturing video
 
 with picamera.PiCamera() as camera: 
-	camera.resolution = (640, 480)
-	camera.framerate = 30
-	camera.start_recording(sys.stdout, format='h264')
-	camera.wait_recording(60)
-	camera.stop_recording()
+	camera.resolution = (960, 540)
+	camera.framerate = 25
+	camera.vflip = True
+	camera.hflip = True
+	camera.start_recording(sys.stdout, bitrate = 500000, format='h264')
+	pause()
+
+	

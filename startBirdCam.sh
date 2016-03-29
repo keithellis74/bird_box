@@ -11,7 +11,7 @@
 
 cd /home/kellis/repo/birdcam/
 echo "Starting live stream"
-bash ustream  &
+screen -S birdbox -dms birdbox ./ustream
 echo "Starting temperature logging"
 python log_temp.py &
 echo "All done"

@@ -3,6 +3,6 @@ RTMP_URL=rtmp://1.21705518.fme.ustream.tv/ustreamVideo/21705518
 STREAM_KEY=fKb9NJUycD2unefr9JhukXybZBRSB3Wq
 while :
 do
-    raspivid -n -rot 90 -vf -hf -t 0 -w 960 -h 540 -fps 25 -b 500000 -o - | ffmpeg -i - -vcodec copy -an -metadata title="Streaming from raspberry pi camera" -f flv $RTMP_URL/$STREAM_KEY
+    raspivid -n -rot 90 -vf -hf -t 0 -w 960 -h 540 -fps 25 -b 500000 -o - | /usr/local/bin/ffmpeg -i - -vcodec copy -an -metadata title="Streaming from raspberry pi camera" -f flv $RTMP_URL/$STREAM_KEY
     sleep 2
 done

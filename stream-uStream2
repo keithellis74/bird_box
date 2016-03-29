@@ -1,6 +1,6 @@
 #!/bin/bash
-RTMP_URL=rtmp://a.rtmp.youtube.com/live2
-STREAM_KEY=keiths-pi-tutor-0012.w2e6-6ttr-rue8-bu8d
+RTMP_URL=rtmp://1.22079439.fme.ustream.tv/ustreamVideo/22079439
+STREAM_KEY=U8LmvKcPe3pCU5gbb5m2pexDXHCRBJDW
 while :
 do
     raspivid -n -vf -hf -t 0 -w 960 -h 540 -fps 25 -b 500000 -o - | ffmpeg -i - -vcodec copy -an -metadata title="Streaming from raspberry pi camera" -f flv $RTMP_URL/$STREAM_KEY

@@ -16,8 +16,12 @@ import time
 
 # uStream server info
 # uStream keys
-RTMP_URL="rtmp://1.21705518.fme.ustream.tv/ustreamVideo/21705518"
-STREAM_KEY="fKb9NJUycD2unefr9JhukXybZBRSB3Wq"
+#RTMP_URL="rtmp://1.21705518.fme.ustream.tv/ustreamVideo/21705518"
+#STREAM_KEY="fKb9NJUycD2unefr9JhukXybZBRSB3Wq"
+
+# uStream2 keys
+RTMP_URL="rtmp://1.22079439.fme.ustream.tv/ustreamVideo/22079439"
+STREAM_KEY="U8LmvKcPe3pCU5gbb5m2pexDXHCRBJDW"
 
 count = 0  #counts how many stream loops have been completed
 snapshot_frequency = 10  #frequency of snapshops in seconds
@@ -62,7 +66,7 @@ try:
 	snap_shot_count = 0
 	while True:
 		if not_recording():
-			count += 1 # Count number of times Stream has been restarted
+epo/			count += 1 # Count number of times Stream has been restarted
 			stream_now() # Start the stream
 		if time.time() - last > snapshot_frequency:  # Take snap shot
 			print("taking snap shot No.",snap_shot_count)

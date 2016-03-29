@@ -31,36 +31,57 @@ def start_stream(val):
 	start= time()
 	last = start
 	snap_shot_count = 0
-#	stream_now(val)
-
-	if val == "restart":
-		print("re-opening pipe")
+	try:
 		stream = subprocess.Popen(cmdline, stdin=subprocess.PIPE)
-		sleep(1)
-
+	except BrokenPipeError:
+		print("stream IOError")
+		stream.close()
+	sleep(1)
 	
 	try:
 		print("Create camera object")
 		camera = picamera.PiCamera()
-#		with picamera.PiCamera() as camera:
 		camera.resolution = (960, 540)
 		camera.framerate = 25
 		camera.vflip = True
 		camera.hflip = True
 		camera.annotate_background = picamera.Color('black')
+		
+	except BrokenPipeError:
+		print("Broken Pipe Error 2")
+		camera.close()
+		return("restart")
 
 	except picamera.exc.PiCameraMMALError:
 		print("Camera Closed!")
-		camera.close()
+		#camera.close()
 		print("Is camera recording", camera.recording)
 		print("Is camera closed?", camera.closed)
-
+		sleep(2)
+		stream.kill()
+		sleep(2)
+		return("restart")
 	
 	print("About to start recording")
-	camera.start_recording(stream.stdin, format='h264', bitrate = 500000)
 	
-	running = True
-	while running:
+	
+	try:
+	
+		camera.start_recording(stream.stdin, format='h264', bitrate = 500000)
+	
+	except BrokenPipeError:
+		print("Broken Pipe Error 1")
+		camera.stop_recording()
+		camera.close()
+		return("restart")
+
+
+	while True:
+		try:
+			stream.poll()
+		except BrokenPipeError:
+			print("poll broken pipe error")
+			break
 		i = datetime.now()
 		now = i.strftime('%d %b %Y - %H:%M:%S')
 		camera.annotate_text = ' Bird Cam - ' + now + ' - restream = ' + str(re_stream) + ' '
@@ -68,11 +89,18 @@ def start_stream(val):
 		try:
 			camera.wait_recording(0.2)
 
+		except BrokenPipeError:
+			print("Broken Pipe Error 3")
+			#camera.stop_recording()
+			#camera.close()
+			return("restart")
+
 		except IOError:
 			running = False
 			print("PIPE error detected")
 			re_stream += 1
 			print ("re_stream =", re_stream)
+			camera.close()
 			stream.terminate()
 			print("Close camera")
 			print("restart stream")
@@ -96,56 +124,9 @@ def start_stream(val):
 					snap_shot_count = 0
 				else:
 					snap_shot_count += 1
+					
 	
 				
-
-def stream_now(val):
-	global stream
-	global cmdline
-	global camera
-	if val == "restart":
-		print("re-opening pipe")
-		stream = subprocess.Popen(cmdline, stdin=subprocess.PIPE)
-		sleep(1)
-		print("Start Picamera")
-		if start_picamera():
-			print("About to start recording")
-			camera.start_recording(stream.stdin, format='h264', bitrate = 500000)
-		else:
-			print("This did not work")
-			return
-	if val == "start":
-		print("Start Picamera")
-		if start_picamera():
-			print("About to start recording")
-			camera.start_recording(stream.stdin, format='h264', bitrate = 500000)
-		else:
-			print("This did not work")
-			return
-	
-#Function to take a snapshop image	
-def snap_shot(name):
-	camera.capture('images/'+ name +'.jpg', use_video_port=True)  	
-
-
-def start_picamera():
-	global camera
-	global stream
-	try:
-		print("Create camera object")
-#			camera = picamera.PiCamera()
-		with picamera.PiCamera() as camera:
-			camera.resolution = (960, 540)
-			camera.framerate = 25
-			camera.vflip = True
-			camera.hflip = True
-			camera.annotate_background = picamera.Color('black')
-			return camera
-	except picamera.exc.PiCameraMMALError:
-		print("Camera Closed!")
-		camera.close()
-		print("Is camera recording", camera.recording)
-		print("Is camera closed?", camera.closed)
 
 
 # ffmpeg command line
@@ -158,24 +139,15 @@ cmdline =['ffmpeg',
 			 RTMP_URL +'/' + STREAM_KEY]
 
 
-# Setup up pipe to ffmpeg
-print("Setup stream")
-
-stream = subprocess.Popen(cmdline, stdin=subprocess.PIPE)
-
 
 
 #Set up picamera
 val = start_stream("start")
-global camera		
-running2 = True
-while running2:
+while True:
 	if val == "stop":
 		print("CTRL+C pressed, exiting stream")
 		break
 	elif val == "restart":
 		start_stream("restart")	
-	else:	
-		running2 = False
 print("end")
 

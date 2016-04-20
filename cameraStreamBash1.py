@@ -43,9 +43,9 @@ def start_stream():
 	snap_shot_count = 0
 	ext_temp = get_temp('external')
 
-
 #	print("Create camera object")
 	camera = picamera.PiCamera()
+	camera.roatation = 90
 	camera.resolution = (960, 540)
 	camera.framerate = 25
 	camera.vflip = True

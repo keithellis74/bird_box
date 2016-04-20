@@ -32,7 +32,9 @@ def get_temp(sensor):
 		field_id = 2
 	else:
 		field_id = 1
-	return channel.get_field_last_text(field=field_id)
+	temp = channel.get_field_last_text(field=field_id)
+	temp = str(round(float(temp),1))
+	return temp
 
 
 def start_stream():
@@ -61,7 +63,7 @@ def start_stream():
 
 		i = datetime.now()
 		now = i.strftime('%d %b %Y - %H:%M:%S')
-		camera.annotate_text = ' Bird Cam - ' + now + ' ' + ' Ext temp = ' + ext_temp
+		camera.annotate_text = ' Bird Cam - ' + now + ' -' + ' Ext temp = ' + ext_temp + 'C'+ ' '
 		
 		try:
 			camera.wait_recording(0.2)

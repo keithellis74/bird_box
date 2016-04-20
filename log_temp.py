@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 #
 # Post data to thingspeak using thingspeak lib
 # https://github.com/mchwalisz/thingspeak
@@ -16,7 +16,7 @@ EXT_ID = "28-041591f7d8ff"
 INT_ID = "28-0015220d64ee"
 FREQUENCY = 5 * 60 # Record data at this frequency
 
-def doit(channel):
+def publish(channel):
 
 	'''
 	Get tempreatures
@@ -43,5 +43,5 @@ if __name__ == "__main__":
         Send chanels to thingspeak
         '''
         
-        doit(channel)
+        publish(channel)
         time.sleep(FREQUENCY)

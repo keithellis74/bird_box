@@ -39,7 +39,8 @@ def get_temp(sensor):
 
 def start_stream():
 	start= time()
-	last_temp, last_snap = start
+	last_temp = start
+	last_snap = start
 	snap_shot_count = 0
 	ext_temp = get_temp('external')
 	camera = picamera.PiCamera()

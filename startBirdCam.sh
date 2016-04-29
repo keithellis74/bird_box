@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # This bash script calls all required scripts and programmes
-# to start birdcam at boot using systemD 
+# to start birdcam at boot using systemD
 # So far the following items are called/
 #
 # 1) Python bash script
@@ -13,8 +13,7 @@ cd /home/kellis/repo/birdcam/
 echo "Starting live stream"
 screen -S birdbox -dms birdbox ./startPythonStream.sh
 echo "Starting temperature logging"
-python log_temp.py &
+python3 log_temp.py &
 echo "All done"
 sudo python3 irLED.py &
 echo "turning on IR LED"
-

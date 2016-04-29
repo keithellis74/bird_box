@@ -11,7 +11,7 @@ import thingspeak
 import ds18b20
 
 channel_id = "88282"
-write_key  = "LE6B6L2ZRZ592AA8"
+write_key  = "xxxxxxxxxxxxxxxxxxxxxxx"
 EXT_ID = "28-041591f7d8ff"
 INT_ID = "28-0015220d64ee"
 FREQUENCY = 5 * 60 # Record data at this frequency
@@ -36,12 +36,12 @@ def publish(channel):
 
 #sleep for 16 seconds (api limit of 15 secs)
 if __name__ == "__main__":
-	
+
     channel = thingspeak.Channel(id=channel_id,write_key=write_key)
     while True:
         '''
         Send chanels to thingspeak
         '''
-        
+
         publish(channel)
         time.sleep(FREQUENCY)

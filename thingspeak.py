@@ -12,7 +12,7 @@ class Channel(object):
         self.api_key = api_key
         self.write_key = write_key
         self.fmt = ('.' + fmt) if fmt in ['json', 'xml'] else ''
-            
+
     def get(self, options=dict()):
         """Get a channel feed.
 
@@ -45,7 +45,7 @@ class Channel(object):
         )
         r = requests.get(url, params=options)
         return self._fmt(r)
-        
+
     def get_field_last_text(self, field=None, options=dict()):
         """Get last result from particular field in text format
 
@@ -62,8 +62,8 @@ class Channel(object):
             fmt='.txt'
         )
         r = requests.get(url, params=options)
-        return self._fmt(r)        
-        
+        return self._fmt(r)
+
 
     def view(self):
         """View a Channel"""

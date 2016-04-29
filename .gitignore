@@ -1,6 +1,5 @@
 pictures/
 video/
-*.jpg
 *.h264
 *.pyc
 *.bak

@@ -20,6 +20,7 @@ This repository supports my [blog post](http://www.pi-tutorials.co.uk/birdbox)
 * [raspivid](http://www.pi-tutorials.co.uk/post/142702979779/raspberry-pi-bird-box)
 ustream.sh
 * [picamera](http://www.pi-tutorials.co.uk/post/143079533229/raspberry-pi-bird-box)
+
   * cameraStreamBash.py - This is the python code, basic version this needs to be called by a bash script
   * startPythonStream.sh - This is the script to call the python code above
   * cameraStreamBash1.py - This is the more advance python code which adds the text overlay to the video stream, including the date stamp and live temperature data, this also needs to be called by the bash script above, just make sure you edit the file name so the correct python file is run
